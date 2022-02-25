@@ -125,7 +125,7 @@ initScreen:
         lda #$10
         sta VIC_HORIZ
         lda #$fe                ; Custom chars 
-        ;sta VIC_CHARLOC
+        sta VIC_CHARLOC
         lda #>CHAR_LOC          ; Store only high byte for char pointer
         sta CHAR_POINTER + 1
 cls:
