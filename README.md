@@ -1,4 +1,4 @@
-# Vic-line
+# Vic20-linedraw
 Buffered line-drawing routine for unexpanded Vic-20
 
 Compiler: acme
