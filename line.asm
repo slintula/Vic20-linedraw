@@ -196,7 +196,6 @@ swapScreen:
         ldy #$40
 +       stx pchar_buffer_max
         sty char_buffer_index
-        jmp mainloop
         ldy #$ff                ; clear chars
         lda #$0
         cpx #$80
