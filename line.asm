@@ -221,7 +221,7 @@ resetCoordBuffer:
         rts
 
 setCoordsFromBuffer:
-        ldy coord_buffer_index
+        ldy coord_buffer_index  
         lda .coordBuffer, y
         sta line_x1
         iny
@@ -276,7 +276,7 @@ calcDeltaValues:
         bpl +
         jsr abs
         ldx #$ff
-+       stx xi
++       stx xi                  ; xinc/xdec
         sta dx
         ldx #$1
         ldy #$10
@@ -287,11 +287,14 @@ calcDeltaValues:
         jsr abs
         ldx #$ff
         ldy #$f0
-+       stx yi
-        sty yi16
++       stx yi                  ; yinc/ydec
+        sty yi16                ; yinc/ydec for cell
         sta dy
         rts
 
+; ============================================================================
+; Bresenham line draw
+; ============================================================================
 toLiney:
         jmp initLiney
 drawLine:
@@ -315,7 +318,7 @@ drawLine:
 +       sta diff    
         lda xi
         bpl linex 
-        jsr swapCoords
+        jsr swapCoords          ; Draw loop should always be from min to max
 linex
         jsr initCharCoords
         ldy char_x              ; Set current pixel
@@ -353,7 +356,7 @@ no_wrap
 calc_cell
         clc
         lda cell
-        adc yi16
+        adc yi16                ; Row up / down
         sta cell
         jsr setChar
 shift_pixel       
@@ -402,7 +405,7 @@ initLiney
 +       sta diff                ; diff = 2 * deltaX - deltaY
         lda yi
         bpl liney
-        jsr swapCoords
+        jsr swapCoords          ; Draw loop should always be from min to max
 liney   
         jsr initCharCoords     
         ldy char_x              
@@ -443,13 +446,13 @@ cont
 inc_char_y  
         inc char_y
         lda char_y
-        cmp #$8
+        cmp #$8                 ; If char_y > 7, move one row down 
         bmi loopy
-        and #$7
+        and #$7                 ; char_y range should be 0-7
         sta char_y
         clc
         lda cell
-        adc #$10
+        adc #$10                
         sta cell
         jsr setChar
         jmp loopy
@@ -462,8 +465,8 @@ dmiy
 +       sta diff  
         inc char_y
         lda char_y
-        cmp #$8
-        bmi loopy
+        cmp #$8                 ; If char_y > 7, move one row down 
+        bmi loopy               
         and #$7
         sta char_y
         clc
