@@ -266,9 +266,9 @@ swapCoords:
         sta line_x2   
         lda line_y1             ; Swap y
         ldy line_y2
-        sta line_y1
-        stx line_y2
-calcDeltaValues
+        sty line_y1
+        sta line_y2
+calcDeltaValues:
         ldx #$1
         sec
         lda line_x2
