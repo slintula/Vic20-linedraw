@@ -102,10 +102,12 @@ mainloop
         
 _wait   sei
         lda VIC_RASTER
-        cmp #60
+        cmp #80
         cli
         bne _wait
         jmp swapScreen
+        ;jsr waitKey
+        
         rts
 
 waitKey:
@@ -120,12 +122,14 @@ initScreen:
         sta VIC_COLS
         lda #$20                ; Chars: 8x8 
         sta VIC_ROWS
-        lda #$24                ; #$14, #$1d
+        lda #$24                      ; #$14, #$1d
         sta VIC_VERT
         lda #$10
         sta VIC_HORIZ
         lda #$fe                ; Custom chars 
         sta VIC_CHARLOC
+        lda #<CHAR_LOC          ; Store only high byte for char pointer
+        sta CHAR_POINTER
         lda #>CHAR_LOC          ; Store only high byte for char pointer
         sta CHAR_POINTER + 1
 cls:
@@ -138,13 +142,11 @@ cls:
         sta SCREEN_LOC, y
         sta COLOR_LOC, y
         rts
-
 abs:    
         eor #$ff
         clc
         adc #1
         rts 
-
 setChar:
         ldy #$0
         sty char_ptr + 1
@@ -199,7 +201,7 @@ swapScreen:
         ldy #$ff                ; clear chars
         lda #$0
         cpx #$80
-        bpl minloop
+        bmi minloop
 maxloop sta CHAR_LOC+$200, y
         sta CHAR_LOC+$300, y
         dey
