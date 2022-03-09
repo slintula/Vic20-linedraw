@@ -106,8 +106,6 @@ _wait   sei
         cli
         bne _wait
         jmp swapScreen
-        ;jsr waitKey
-        
         rts
 
 waitKey:
@@ -142,11 +140,12 @@ cls:
         sta SCREEN_LOC, y
         sta COLOR_LOC, y
         rts
-abs:    
+neg:    
         eor #$ff
         clc
         adc #1
         rts 
+
 setChar:
         ldy #$0
         sty char_ptr + 1
@@ -276,7 +275,7 @@ calcDeltaValues:
         lda line_x2
         sbc line_x1 
         bpl +
-        jsr abs
+        jsr neg
         ldx #$ff
 +       stx xi                  ; xinc/xdec
         sta dx
@@ -286,7 +285,7 @@ calcDeltaValues:
         lda line_y2
         sbc line_y1
         bpl +
-        jsr abs
+        jsr neg
         ldx #$ff
         ldy #$f0
 +       stx yi                  ; yinc/ydec
