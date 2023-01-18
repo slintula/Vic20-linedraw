@@ -120,15 +120,15 @@ initScreen:
         sta VIC_COLS
         lda #$20                ; Chars: 8x8 
         sta VIC_ROWS
-        lda #$24                      ; #$14, #$1d
+        lda #$24                
         sta VIC_VERT
         lda #$10
         sta VIC_HORIZ
         lda #$fe                ; Custom chars 
         sta VIC_CHARLOC
-        lda #<CHAR_LOC          ; Store only high byte for char pointer
+        lda #<CHAR_LOC          ; Char pointer - low
         sta CHAR_POINTER
-        lda #>CHAR_LOC          ; Store only high byte for char pointer
+        lda #>CHAR_LOC          ; Char pointer - high
         sta CHAR_POINTER + 1
 cls:
         ldy #$ff
